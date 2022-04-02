@@ -1,0 +1,14 @@
+import sys
+
+N = int(sys.stdin.readline())
+num = [int(sys.stdin.readline()) for _ in range(N)]
+
+max_i = num.pop()
+sum = 1
+while num:
+    c = num.pop()
+    if max_i < c:
+        max_i = c
+        sum += 1
+
+print(sum)
