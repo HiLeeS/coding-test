@@ -1,0 +1,24 @@
+# 코드
+import sys
+
+N = int(sys.stdin.readline())
+num = list(map(int, sys.stdin.readline().split()))
+stack = []
+res = [0 for i in range(N)]
+
+for i in range(len(num)):
+    while stack:
+        if num[i] < stack[-1][1]:
+            res[i] = stack[-1][0] + 1
+            break
+        else:
+            stack.pop()
+
+    stack.append([i, num[i]])
+
+print(*res)
+
+#설명
+안쪽 루프가 많이 돌 경우 시간초과에 걸린다.
+O(N)으로 해야 했으며 핵심은 값 비교를 하기 위해 확실한 숫자만을 저장해놓는 것이었다.
+예를 들어 9234 에서 4는 뒤에서부터 3,2,9로 탐색하는 것이 아니라 9와 3보다 작은 2는 배제하고 3, 9만을 가지고 비교해야 시간초과에 걸리지 않는다.
