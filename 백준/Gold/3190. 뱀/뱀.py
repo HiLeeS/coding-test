@@ -1,0 +1,72 @@
+from collections import deque
+import sys
+
+N = int(sys.stdin.readline())
+apple = int(sys.stdin.readline())
+#사과 좌표 입력받기
+apples = []
+for i in range(apple):
+    a, b = map(int, sys.stdin.readline().split())
+
+    apples.append([a-1,b-1])
+
+#방향 좌표 입력받기
+turn = int(sys.stdin.readline())
+moves = {}
+for i in range(turn):
+    X, C = input().split()
+    moves[int(X)] = C
+
+snake = deque()
+snake.append([0,0])
+snake.append([0,1])
+cnt = 0
+x = 0
+y = 0
+#방향은 0이 오른쪽, 1이 아래, 2가 왼쪽, 3이 위
+direction = 0
+while True:
+    cnt += 1
+    head = snake.pop()
+    #게임이 끝나는지
+    if head in snake:
+        break
+    elif head[0] == N or head[1] == N or head[0] < 0 or head[1] < 0:
+        break
+
+
+    #사과를 만났는지
+    if head not in apples:
+        snake.popleft()
+    else:
+        x = head[0]
+        y = head[1]
+        apples.remove([x,y])
+
+    #방향전환
+    if cnt in moves.keys():
+        if moves[cnt] == 'L':
+            if direction != 0:
+                direction -= 1
+            else:
+                direction = 3
+
+        elif moves[cnt] == 'D':
+            if direction != 3:
+                direction += 1
+            else:
+                direction = 0
+
+    snake.append(head)
+
+    if direction == 0:
+        snake.append([head[0],head[1]+1])
+    elif direction == 1:
+        snake.append([head[0] + 1, head[1]])
+    elif direction == 2:
+        snake.append([head[0], head[1] - 1])
+    elif direction == 3:
+        snake.append([head[0] - 1, head[1]])
+
+
+print(cnt)
