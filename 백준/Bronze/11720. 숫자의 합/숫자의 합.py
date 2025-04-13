@@ -1,9 +1,8 @@
 # 코드를 작성해주세요
-n = int(input())
+n = input()
 sum = 0
-
-num = input()
-for i in num:
-    sum += int(i)
+for i in range(len(n)):
+    sum = sum + int(n[i])
+    print(int(n[i], sum))
 
 print(sum)
