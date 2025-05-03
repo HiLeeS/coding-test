@@ -1,30 +1,36 @@
+import sys
 from collections import deque
+input = sys.stdin.readline
 
-def bfs(x,y):
-    que = deque()
-    que.append((x, y))
-
-    while que:
-        x,y = que.popleft()
-
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-
-            if nx < 0 or ny < 0 or nx >= N or ny >= M:
-                continue
-            if graph[nx][ny] == 1:
-                graph[nx][ny] = graph[x][y] + 1
-                que.append((nx, ny))
-
-    return graph[N-1][M-1]
-
+dx = [0, 1, 0, -1]
+dy = [1, 0, -1, 0]
 N, M = map(int, input().split())
-graph = []
+A = [[0] * M for _ in range(N)]
+visited = [[False] * M for _ in range(N)]
+
 for i in range(N):
-    graph.append(list(map(int, input())))
+    numbers = list(input())
+    for j in range(M):
+        A[i][j] = int(numbers[j])
 
-dx = [-1,1,0,0]
-dy = [0,0,-1,1]
+def bfs(i, j):
+    queue = deque()
+    queue.append((i, j))
+    visited[i][j] = True
 
-print(bfs(0, 0))
+    while queue:
+        now = queue.popleft()
+        for k in range(4):
+            x = now[0] + dx[k]
+            y = now[1] + dy[k]
+            
+            if x >= 0 and y >= 0 and x < N and y < M: 
+
+                if A[x][y] != 0 and visited[x][y] is False:
+                    visited[x][y] = True
+                    A[x][y] = A[now[0]][now[1]] + 1
+                    queue.append((x, y))
+        
+
+bfs(0, 0)
+print(A[N-1][M-1])
