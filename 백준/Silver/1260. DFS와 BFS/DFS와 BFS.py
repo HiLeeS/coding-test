@@ -1,41 +1,46 @@
 import sys
 from collections import deque
+sys.setrecursionlimit(10000)
+input = sys.stdin.readline
 
-def dfs(edge, v, visited):
-    visited[v] = True
-    print(v, end=' ')
+N, M, V = map(int, input().split())
 
-    for g in edge:
-        if v in g:
-            for i in g:
-                if visited[i] == False:
-                    dfs(edge, i, visited)
+A = [[] for _ in range(N+1)]
+visited_1 = [False] * (N+1)
+visited_2 = [False] * (N+1)
 
-def bfs(edge, v, visited):
-    visited[v] = True
+for _ in range(M):
+    v, e = map(int, input().split())
+    A[v].append(e)
+    A[e].append(v)
+
+def dfs(V):
+    visited_1[V] = True
+    print(V, end=' ')
+
+    for i in A[V]:
+        if visited_1[i] is False:
+            dfs(i)
+
+def bfs(V):
     deq = deque()
-    deq.append(v)
+    deq.append(V)
+    visited_2[V] = True
+
     while deq:
+        now = deq.popleft()
+        print(now, end=' ')
 
-        a = deq.popleft()
-        print(a, end=' ')
+        for i in A[now]:
+            if visited_2[i] is False:
+                visited_2[i] = True
+                deq.append(i)
 
-        for g in edge:
-            if a in g:
-                for i in g:
-                    if visited[i] == False:
-                        visited[i] = True
-                        deq.append(i)
 
-N,M,V = map(int, sys.stdin.readline().split())
+for i in range(N+1):
+    A[i].sort()
 
-edge = [[] for _ in range(M)]
-for i in range(M):
-    edge[i]=list(map(int, sys.stdin.readline().split()))
 
-edge = sorted(edge,key= lambda x:sorted([x[0],x[1]]))
-visited = [False] * (N+1)
-dfs(edge, V, visited)
+dfs(V)
 print()
-visited = [False] * (N+1)
-bfs(edge, V, visited)
+bfs(V)
