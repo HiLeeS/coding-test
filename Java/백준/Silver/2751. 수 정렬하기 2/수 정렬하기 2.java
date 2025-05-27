@@ -1,33 +1,27 @@
 import java.io.*;
-import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        final int OFFSET = 1000000;    // 음수 보정용
+        final int SIZE = 2000001;      // 전체 범위 (-1,000,000 ~ 1,000,000)
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
-        
-        /*
-        -1000000 ~ 1000000
-        기준점 0 = index 1000000으로 생각
-        */
-        
-        boolean[] arr = new boolean[2000001];
-        
+
+        boolean[] isPresent = new boolean[SIZE];
+
         int n = Integer.parseInt(br.readLine());
-        
-        
-        for(int i = 0; i < n; i++){
-            arr[Integer.parseInt(br.readLine()) + 1000000] = true;
+        for (int i = 0; i < n; i++) {
+            int value = Integer.parseInt(br.readLine());
+            isPresent[value + OFFSET] = true;  // 값 등장 표시
         }
-        
-        
-        for(int i = 0; i < arr.length; i++){
-            if(arr[i]){
-                sb.append((i-1000000)).append("\n");
+
+        for (int i = 0; i < SIZE; i++) {
+            if (isPresent[i]) {
+                sb.append(i - OFFSET).append("\n");
             }
         }
-        
+
         System.out.print(sb);
-        
     }
 }
