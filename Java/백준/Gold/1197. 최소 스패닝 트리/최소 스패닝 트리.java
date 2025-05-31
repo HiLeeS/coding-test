@@ -11,31 +11,31 @@ public class Main {
         int V = Integer.parseInt(st.nextToken());
         int E = Integer.parseInt(st.nextToken());
         
-        List<Edge> edges = new ArrayList<>();
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a->a[2]));
         for(int i =0; i<E; i++){
             st = new StringTokenizer(br.readLine());
             int A = Integer.parseInt(st.nextToken());
             int B = Integer.parseInt(st.nextToken());
             int C = Integer.parseInt(st.nextToken());
-            edges.add(new Edge(A,B,C));
+            pq.offer(new int[]{A,B,C});
         }
         
-        Collections.sort(edges);
         parent = new int[V+1];
         for(int i =0; i<V+1; i++){
             parent[i] = i;
         }
         
-        int count = 0;
         int result = 0;
-        while(count < V-1){
-            for(Edge e:edges){
-                if(find(e.from) != find(e.to)){
-                    union(e.from, e.to);
-                    result += e.weight;
-                    count += 1;
-                }
+        int count = 0;
+        while(!pq.isEmpty()){
+            int[] now = pq.poll();
+            int a = now[0], b=now[1], c=now[2];
+            if(find(a) != find(b)){
+                union(a, b);
+                result += c;
+                count += 1;
             }
+            if(count == V-1) break;
         }
         
         System.out.print(result);
@@ -54,18 +54,4 @@ public class Main {
 
 }
 
-
-class Edge implements Comparable<Edge> {
-    int from, to, weight;
-
-    Edge(int from, int to, int weight) {
-        this.from = from;
-        this.to = to;
-        this.weight = weight;
-    }
-
-    public int compareTo(Edge other) {
-        return this.weight - other.weight;
-    }
-}
 
